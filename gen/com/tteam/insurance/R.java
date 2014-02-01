@@ -221,16 +221,10 @@ containing a value of this type.
         public static final int ic_plusone_tall_off_client=0x7f02001c;
     }
     public static final class id {
-        public static final int action_settings=0x7f05000c;
-        public static final int exit_app=0x7f05000d;
+        public static final int action_settings=0x7f050006;
+        public static final int exit_app=0x7f050007;
         public static final int hybrid=0x7f050004;
         public static final int imageView1=0x7f050005;
-        public static final int imageView2=0x7f050006;
-        public static final int imageView3=0x7f050007;
-        public static final int imageView4=0x7f050008;
-        public static final int imageView5=0x7f050009;
-        public static final int imageView6=0x7f05000a;
-        public static final int imageView7=0x7f05000b;
         public static final int none=0x7f050000;
         public static final int normal=0x7f050001;
         public static final int satellite=0x7f050002;
@@ -411,7 +405,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name com.tteam.insurance:adSize
+          @attr name android:adSize
         */
         public static final int AdsAttrs_adSize = 0;
         /**
@@ -431,7 +425,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name com.tteam.insurance:adSizes
+          @attr name android:adSizes
         */
         public static final int AdsAttrs_adSizes = 1;
         /**
@@ -447,7 +441,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name com.tteam.insurance:adUnitId
+          @attr name android:adUnitId
         */
         public static final int AdsAttrs_adUnitId = 2;
         /** Attributes that can be used with a MapAttrs.
@@ -503,7 +497,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.tteam.insurance:cameraBearing
+          @attr name android:cameraBearing
         */
         public static final int MapAttrs_cameraBearing = 1;
         /**
@@ -517,7 +511,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.tteam.insurance:cameraTargetLat
+          @attr name android:cameraTargetLat
         */
         public static final int MapAttrs_cameraTargetLat = 2;
         /**
@@ -531,7 +525,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.tteam.insurance:cameraTargetLng
+          @attr name android:cameraTargetLng
         */
         public static final int MapAttrs_cameraTargetLng = 3;
         /**
@@ -545,7 +539,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.tteam.insurance:cameraTilt
+          @attr name android:cameraTilt
         */
         public static final int MapAttrs_cameraTilt = 4;
         /**
@@ -559,7 +553,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.tteam.insurance:cameraZoom
+          @attr name android:cameraZoom
         */
         public static final int MapAttrs_cameraZoom = 5;
         /**
@@ -579,7 +573,7 @@ containing a value of this type.
 <tr><td><code>terrain</code></td><td>3</td><td></td></tr>
 <tr><td><code>hybrid</code></td><td>4</td><td></td></tr>
 </table>
-          @attr name com.tteam.insurance:mapType
+          @attr name android:mapType
         */
         public static final int MapAttrs_mapType = 0;
         /**
@@ -593,7 +587,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.tteam.insurance:uiCompass
+          @attr name android:uiCompass
         */
         public static final int MapAttrs_uiCompass = 6;
         /**
@@ -607,7 +601,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.tteam.insurance:uiRotateGestures
+          @attr name android:uiRotateGestures
         */
         public static final int MapAttrs_uiRotateGestures = 7;
         /**
@@ -621,7 +615,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.tteam.insurance:uiScrollGestures
+          @attr name android:uiScrollGestures
         */
         public static final int MapAttrs_uiScrollGestures = 8;
         /**
@@ -635,7 +629,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.tteam.insurance:uiTiltGestures
+          @attr name android:uiTiltGestures
         */
         public static final int MapAttrs_uiTiltGestures = 9;
         /**
@@ -649,7 +643,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.tteam.insurance:uiZoomControls
+          @attr name android:uiZoomControls
         */
         public static final int MapAttrs_uiZoomControls = 10;
         /**
@@ -663,7 +657,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.tteam.insurance:uiZoomGestures
+          @attr name android:uiZoomGestures
         */
         public static final int MapAttrs_uiZoomGestures = 11;
         /**
@@ -677,7 +671,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.tteam.insurance:useViewLifecycle
+          @attr name android:useViewLifecycle
         */
         public static final int MapAttrs_useViewLifecycle = 12;
         /**
@@ -691,7 +685,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.tteam.insurance:zOrderOnTop
+          @attr name android:zOrderOnTop
         */
         public static final int MapAttrs_zOrderOnTop = 13;
     };
