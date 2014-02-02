@@ -16,6 +16,6 @@
         android:layout_centerVertical="true"
         android:contentDescription="@string/start_btn"
         android:src="@drawable/ic_launcher" />
-
+    
 
 </RelativeLayout>
