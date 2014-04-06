@@ -31,11 +31,11 @@ public class Tracker extends Service {
 		Time now = new Time();
 		now.setToNow();
 
-		String string = now.format2445() + "\n";
+		String string = "t " + now.format2445() + "\n";
 
 		FileOutputStream fos;
 		try {
-			fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+			fos = openFileOutput(FILENAME, Context.MODE_APPEND);
 			fos.write(string.getBytes());
 			fos.close();
 		} catch (FileNotFoundException e) {
@@ -48,6 +48,7 @@ public class Tracker extends Service {
 		LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		LocationListener ll = new mylocationlistener();
 		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5, 0, ll);
+		lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5, 0, ll);
 		SensorManager mySensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 		List<Sensor> mySensors = mySensorManager
 				.getSensorList(Sensor.TYPE_ORIENTATION);
@@ -80,13 +81,13 @@ public class Tracker extends Service {
 				Time now = new Time();
 				now.setToNow();
 
-				String string = location.getLatitude() + ":"
+				String string = "c " + location.getLatitude() + " "
 						+ location.getLongitude() + " " + now.format2445()
 						+ "\n";
 
 				FileOutputStream fos;
 				try {
-					fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+					fos = openFileOutput(FILENAME, Context.MODE_APPEND);
 					fos.write(string.getBytes());
 					fos.close();
 				} catch (FileNotFoundException e) {
