@@ -18,7 +18,7 @@ import android.widget.ImageView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -40,7 +40,11 @@ public class ShowTrack extends FragmentActivity {
 		fillPoints();
 		// initialize map
 		try {
-			map = ((MapFragment) getFragmentManager()
+			/*
+			 * map = ((MapFragment) getFragmentManager()
+			 * .findFragmentById(R.id.map)).getMap();
+			 */
+			map = ((SupportMapFragment) getSupportFragmentManager()
 					.findFragmentById(R.id.map)).getMap();
 			Marker mypos;
 			mypos = map.addMarker(new MarkerOptions().position(myPosition)
