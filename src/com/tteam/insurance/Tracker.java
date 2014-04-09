@@ -20,17 +20,21 @@ import android.os.IBinder;
 import android.text.format.Time;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
+
 public class Tracker extends Service {
 
 	String path = "track";
+	Track t;
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
+
 		// path = intent.getStringExtra("KEY1");
 		String FILENAME = "track";
 		Time now = new Time();
 		now.setToNow();
-
+		t = new Track(now);
 		String string = "t " + now.format2445() + "\n";
 
 		FileOutputStream fos;
@@ -84,6 +88,8 @@ public class Tracker extends Service {
 				String string = "c " + location.getLatitude() + " "
 						+ location.getLongitude() + " " + now.format2445()
 						+ "\n";
+				t.add(new LatLng(location.getLatitude(), location
+						.getLongitude()));
 
 				FileOutputStream fos;
 				try {
