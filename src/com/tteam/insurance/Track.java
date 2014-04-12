@@ -1,23 +1,26 @@
 package com.tteam.insurance;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.format.Time;
 
-import com.google.android.gms.maps.model.LatLng;
+public class Track implements Parcelable, Serializable {
 
-public class Track implements Parcelable {
-
-	ArrayList<LatLng> coords;
-	ArrayList<LatLng> incidents;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	ArrayList<Point> coords;
+	ArrayList<Incident> incidents;
 	String startTime;
 	String finishTime;
 
 	public Track(Time t) {
-		coords = new ArrayList<LatLng>();
-		incidents = new ArrayList<LatLng>();
+		coords = new ArrayList<Point>();
+		incidents = new ArrayList<Incident>();
 		startTime = t.format2445();
 		finishTime = "";
 	}
@@ -29,10 +32,14 @@ public class Track implements Parcelable {
 		finishTime = p.readString();
 	}
 
+	public void endTrack(Time t) {
+		finishTime = t.format2445();
+	}
+
 	/*
 	 * add new coordinate
 	 */
-	public void add(LatLng point) {
+	public void add(Point point) {
 		coords.add(point);
 	}
 
