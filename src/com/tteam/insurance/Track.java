@@ -39,8 +39,15 @@ public class Track implements Parcelable, Serializable {
 	/*
 	 * add new coordinate
 	 */
-	public void add(Point point) {
-		coords.add(point);
+	public void add(double latitude, double longitude, Time t) {
+		// if it not the first one
+		if (coords.size() > 1) {
+			coords.add(new Point(latitude, longitude, t, coords.get(coords
+					.size() - 1)));
+			// first point of the track
+		} else {
+			coords.add(new Point(latitude, longitude, t, null));
+		}
 	}
 
 	@Override

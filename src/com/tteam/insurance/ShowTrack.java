@@ -83,6 +83,16 @@ public class ShowTrack extends FragmentActivity {
 				}
 			}
 		});
+		// it will stop service may be
+		ImageView stopBtn = (ImageView) findViewById(R.id.stop_btn);
+		stopBtn.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+
+			}
+		});
 	}
 
 	@Override

@@ -15,6 +15,13 @@
 	      android:contentDescription="@string/start_btn"
 	      android:src="@drawable/ic_launcher" />
 	<ImageView
+	      android:id="@+id/stop_andro"
+	      android:layout_width="wrap_content"
+	      android:layout_height="wrap_content"
+	      android:layout_toRightOf="@+id/imageView1"	         
+	      android:contentDescription="@string/start_btn"
+	      android:src="@drawable/ic_launcher" />
+	<ImageView
 	      android:id="@+id/clear_andro"
 	      android:layout_width="wrap_content"
 	      android:layout_height="wrap_content"

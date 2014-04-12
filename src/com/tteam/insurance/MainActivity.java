@@ -19,6 +19,7 @@ public class MainActivity extends Activity {
 	ImageView start;
 	ImageView clear;
 	ImageView clearCoordsFile;
+	ImageView stopService;
 	private Context context;
 	private Intent serviceIntent;
 
@@ -82,7 +83,19 @@ public class MainActivity extends Activity {
 				displayCoords();
 			}
 		});
+		stopService = (ImageView) findViewById(R.id.stop_andro);
+		stopService.setOnClickListener(new View.OnClickListener() {
 
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				try {
+
+				} catch (Exception e) {
+					context.stopService(serviceIntent);
+				}
+			}
+		});
 	}
 
 	@Override

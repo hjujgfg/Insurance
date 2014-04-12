@@ -3,15 +3,10 @@ package com.tteam.insurance;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.List;
 
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -19,8 +14,6 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.text.format.Time;
 import android.util.Log;
-
-import com.google.android.gms.maps.model.LatLng;
 
 public class Tracker extends Service {
 
@@ -51,30 +44,17 @@ public class Tracker extends Service {
 		}
 		LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		LocationListener ll = new mylocationlistener();
+		// get from gps
 		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5, 0, ll);
+		// get from triangulation
 		lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5, 0, ll);
-		SensorManager mySensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-		List<Sensor> mySensors = mySensorManager
-				.getSensorList(Sensor.TYPE_ORIENTATION);
-
-		SensorEventListener mySensorEventListener = new SensorEventListener() {
-
-			@Override
-			public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
-			}
-
-			@Override
-			public void onSensorChanged(SensorEvent event) {
-				// device heading in degrees
-				float azimuth = event.values[0];
-			}
-
-		};
 
 		return Service.START_NOT_STICKY;
 	}
 
+	/*
+	 * listens coordinate changes
+	 */
 	private class mylocationlistener implements LocationListener {
 		@Override
 		public void onLocationChanged(Location location) {
@@ -84,12 +64,12 @@ public class Tracker extends Service {
 				String FILENAME = path;
 				Time now = new Time();
 				now.setToNow();
-
+				// generate string for writing to file
 				String string = "c " + location.getLatitude() + " "
 						+ location.getLongitude() + " " + now.format2445()
 						+ "\n";
-				t.add(new LatLng(location.getLatitude(), location
-						.getLongitude()));
+				// add to track
+				t.add(location.getLatitude(), location.getLongitude(), now);
 
 				FileOutputStream fos;
 				try {
