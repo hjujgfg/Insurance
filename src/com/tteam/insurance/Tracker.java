@@ -21,6 +21,7 @@ public class Tracker extends Service {
 
 	String path = "track";
 	Track t;
+
 	LocationManager lm;
 
 	@Override
