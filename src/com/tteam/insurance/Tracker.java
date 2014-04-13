@@ -1,8 +1,10 @@
 package com.tteam.insurance;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 
 import android.app.Service;
 import android.content.Context;
@@ -19,6 +21,7 @@ public class Tracker extends Service {
 
 	String path = "track";
 	Track t;
+	LocationManager lm;
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
@@ -42,7 +45,7 @@ public class Tracker extends Service {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		LocationListener ll = new mylocationlistener();
 		// get from gps
 		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5, 0, ll);
@@ -50,6 +53,23 @@ public class Tracker extends Service {
 		lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5, 0, ll);
 
 		return Service.START_NOT_STICKY;
+	}
+
+	@Override
+	public void onDestroy() {
+		File f = new File(getFilesDir(), "serializedTrack");
+		FileOutputStream fos;
+		try {
+			fos = new FileOutputStream(f);
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(t);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/*
