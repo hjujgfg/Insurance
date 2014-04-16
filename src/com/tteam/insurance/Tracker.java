@@ -51,7 +51,8 @@ public class Tracker extends Service {
 		// get from gps
 		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 300, 0, ll);
 		// get from triangulation
-		lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 300, 0, ll);
+		// lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 300, 0,
+		// ll);
 
 		return Service.START_NOT_STICKY;
 	}
