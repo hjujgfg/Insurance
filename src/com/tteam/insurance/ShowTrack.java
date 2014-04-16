@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -29,6 +30,7 @@ public class ShowTrack extends FragmentActivity {
 	private GoogleMap map;
 
 	private ArrayList<LatLng> points;
+	private ArrayList<LatLng> incidents;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +38,7 @@ public class ShowTrack extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.show_track);
 		points = new ArrayList<LatLng>();
+		incidents = new ArrayList<LatLng>();
 
 		fillPoints();
 		// initialize map
@@ -81,6 +84,8 @@ public class ShowTrack extends FragmentActivity {
 					map.animateCamera(CameraUpdateFactory.zoomTo(15), 2000,
 							null);
 				}
+				fillIncidents();
+				markIncidents();
 			}
 		});
 		// it will stop service may be
@@ -153,6 +158,50 @@ public class ShowTrack extends FragmentActivity {
 			map.addPolyline(new PolylineOptions()
 					.add(points.get(i), points.get(i + 1)).width(2)
 					.color(Color.RED));
+		}
+	}
+
+	private void markIncidents() {
+		for (LatLng i : incidents) {
+			map.addMarker(new MarkerOptions().position(i).icon(
+					BitmapDescriptorFactory.defaultMarker()));
+		}
+	}
+
+	private void fillIncidents() {
+		try {
+			FileInputStream fis = openFileInput("incidents");
+			// StringBuffer str = new StringBuffer("");
+			InputStreamReader isr = new InputStreamReader(fis);
+			BufferedReader br = new BufferedReader(isr);
+			String tmp = br.readLine();
+
+			while (tmp != "" || tmp != null) {
+				try {
+					String[] words = tmp.split(" ");
+					if (words[0].equals("i")) {
+						incidents.add(new LatLng(Double.parseDouble(words[1]),
+								Double.parseDouble(words[2])));
+					}
+					tmp = br.readLine();
+				} catch (NullPointerException e) {
+					e.printStackTrace();
+					break;
+				}
+
+			}
+			/*
+			 * byte[] buff = new byte[1024]; while (fis.read(buff) != -1) {
+			 * str.append(new String(buff)); }
+			 */
+
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 

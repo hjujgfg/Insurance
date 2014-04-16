@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.text.format.Time;
 
 public class Track implements Parcelable, Serializable {
 
@@ -18,7 +17,7 @@ public class Track implements Parcelable, Serializable {
 	String startTime;
 	String finishTime;
 
-	public Track(Time t) {
+	public Track(SerializableTime t) {
 		coords = new ArrayList<Point>();
 		incidents = new ArrayList<Incident>();
 		startTime = t.format2445();
@@ -32,14 +31,14 @@ public class Track implements Parcelable, Serializable {
 		finishTime = p.readString();
 	}
 
-	public void endTrack(Time t) {
+	public void endTrack(SerializableTime t) {
 		finishTime = t.format2445();
 	}
 
 	/*
 	 * add new coordinate
 	 */
-	public void add(double latitude, double longitude, Time t) {
+	public void add(double latitude, double longitude, SerializableTime t) {
 		// if it not the first one
 		if (coords.size() > 1) {
 			coords.add(new Point(latitude, longitude, t, coords.get(coords
@@ -48,6 +47,19 @@ public class Track implements Parcelable, Serializable {
 		} else {
 			coords.add(new Point(latitude, longitude, t, null));
 		}
+	}
+
+	public void addIncident(Incident inc) {
+		if (inc != null)
+			incidents.add(inc);
+	}
+
+	public Point getLast() {
+		return coords.get(coords.size() - 1);
+	}
+
+	public Point getPreLast() {
+		return coords.get(coords.size() - 2);
 	}
 
 	@Override

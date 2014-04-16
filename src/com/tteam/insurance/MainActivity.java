@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,7 +21,9 @@ public class MainActivity extends Activity {
 	ImageView clear;
 	ImageView clearCoordsFile;
 	ImageView stopService;
-	private Context context;
+	EditText accelerationLimit;
+	// TODO public only for TESTING
+	public static Context context;
 	private Intent serviceIntent;
 
 	@Override
@@ -76,6 +79,10 @@ public class MainActivity extends Activity {
 					File f = new File(context.getFilesDir(), "track");
 					f.delete();
 					f.createNewFile();
+
+					File ff = new File(context.getFilesDir(), "incidents");
+					ff.delete();
+					ff.createNewFile();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -89,6 +96,7 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				context.stopService(serviceIntent);
 				try {
 
 				} catch (Exception e) {
@@ -96,6 +104,18 @@ public class MainActivity extends Activity {
 				}
 			}
 		});
+		accelerationLimit = (EditText) findViewById(R.id.accelerationLimit);
+		accelerationLimit
+				.setOnLongClickListener(new View.OnLongClickListener() {
+
+					@Override
+					public boolean onLongClick(View v) {
+						// TODO Auto-generated method stub
+						Analyzer.setAccelerationLimit(accelerationLimit
+								.getText().toString());
+						return false;
+					}
+				});
 	}
 
 	@Override

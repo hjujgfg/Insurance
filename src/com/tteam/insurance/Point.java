@@ -12,29 +12,43 @@ public class Point implements Parcelable, Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private double latitude, longitude;
-	private Time time;
+	private SerializableTime time;
 	private double speed;
+	private SerializableTime prTime;
 
 	/*
 	 * deprecated? lal
 	 */
-	public Point(double latitude, double longitude, Time t, Time prevT,
-			double prevLa, double prevLo) {
+	public Point(double latitude, double longitude, SerializableTime t,
+			Time prevT, double prevLa, double prevLo) {
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.time = t;
 		speed = countSpeed(latitude, longitude, prevLa, prevLo, t, prevT);
 	}
 
-	public Point(double latitude, double longitude, Time t, Point previous) {
+	public Point(double latitude, double longitude, SerializableTime t,
+			Point previous) {
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.time = t;
-		if (previous != null)
+
+		if (previous != null) {
+			this.prTime = previous.time;
 			speed = countSpeed(latitude, longitude, previous.latitude,
 					previous.longitude, t, previous.time);
-		else
+		} else {
 			speed = 0;
+			prTime = new SerializableTime();
+			prTime.setToNow();
+		}
+
+	}
+
+	@Override
+	public String toString() {
+		return "l: " + latitude + " " + longitude + " " + speed + " "
+				+ ((time.toMillis(true) - prTime.toMillis(true)) / 1000) + "\n";
 	}
 
 	/*
@@ -44,8 +58,24 @@ public class Point implements Parcelable, Serializable {
 		latitude = p.readDouble();
 		longitude = p.readDouble();
 		speed = p.readDouble();
-		time = new Time();
+		time = new SerializableTime();
 		time.set(p.readLong());
+	}
+
+	public double Speed() {
+		return speed;
+	}
+
+	public double Millis() {
+		return time.toMillis(true);
+	}
+
+	public double Lat() {
+		return latitude;
+	}
+
+	public double Lng() {
+		return longitude;
 	}
 
 	/*
@@ -57,7 +87,7 @@ public class Point implements Parcelable, Serializable {
 		long millis1 = t1.toMillis(true);
 		long millis2 = t2.toMillis(true);
 		res = gps2m(x1, y1, x2, y2);
-		res /= (millis1 - millis2);
+		res /= ((millis1 - millis2) / 1000);
 		return res;
 	}
 

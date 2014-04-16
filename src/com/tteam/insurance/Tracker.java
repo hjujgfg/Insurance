@@ -14,7 +14,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.text.format.Time;
 import android.util.Log;
 
 public class Tracker extends Service {
@@ -23,13 +22,14 @@ public class Tracker extends Service {
 	Track t;
 
 	LocationManager lm;
+	LocationListener ll;
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 
 		// path = intent.getStringExtra("KEY1");
 		String FILENAME = "track";
-		Time now = new Time();
+		SerializableTime now = new SerializableTime();
 		now.setToNow();
 		t = new Track(now);
 		String string = "t " + now.format2445() + "\n";
@@ -47,19 +47,21 @@ public class Tracker extends Service {
 			e.printStackTrace();
 		}
 		lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-		LocationListener ll = new mylocationlistener();
+		ll = new mylocationlistener();
 		// get from gps
-		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5, 0, ll);
+		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 300, 0, ll);
 		// get from triangulation
-		lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5, 0, ll);
+		lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 300, 0, ll);
 
 		return Service.START_NOT_STICKY;
 	}
 
 	@Override
 	public void onDestroy() {
+		super.onDestroy();
 		File f = new File(getFilesDir(), "serializedTrack");
 		FileOutputStream fos;
+		lm.removeUpdates(ll);
 		try {
 			fos = new FileOutputStream(f);
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -80,23 +82,39 @@ public class Tracker extends Service {
 		@Override
 		public void onLocationChanged(Location location) {
 			if (location != null) {
-				Log.d("LOCATION CHANGED", location.getLatitude() + "");
-				Log.d("LOCATION CHANGED", location.getLongitude() + "");
+
 				String FILENAME = path;
-				Time now = new Time();
+				SerializableTime now = new SerializableTime();
 				now.setToNow();
+				Log.d("LOCATION CHANGED",
+						location.getLatitude() + " " + now.toMillis(true));
+				Log.d("LOCATION CHANGED", location.getLongitude() + "");
 				// generate string for writing to file
+
 				String string = "c " + location.getLatitude() + " "
 						+ location.getLongitude() + " " + now.format2445()
 						+ "\n";
-				// add to track
-				t.add(location.getLatitude(), location.getLongitude(), now);
 
+				// add to track
+
+				// t.add(location.getLatitude(), location.getLongitude(), now);
+				Incident inc = Analyzer.addPoint(location.getLatitude(),
+						location.getLongitude(), now);
+				String incidents = "";
+				if (inc != null) {
+					incidents = "i " + inc.Lat() + " " + inc.Lng() + "\n";
+				}
+				t.addIncident(inc);
+				// String string = t.getLast().toString();
 				FileOutputStream fos;
 				try {
 					fos = openFileOutput(FILENAME, Context.MODE_APPEND);
 					fos.write(string.getBytes());
 					fos.close();
+					FileOutputStream incstr = openFileOutput("incidents",
+							Context.MODE_APPEND);
+					incstr.write(incidents.getBytes());
+					incstr.close();
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
