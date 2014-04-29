@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
@@ -76,11 +77,14 @@ public class MainActivity extends Activity {
 				// TODO Auto-generated method stub
 				context.stopService(serviceIntent);
 				try {
-					File f = new File(context.getFilesDir(), "track");
+					// File f = new File(context.getFilesDir(), "track");
+					File f = new File(
+							Environment.getExternalStorageDirectory(), "track");
 					f.delete();
 					f.createNewFile();
 
-					File ff = new File(context.getFilesDir(), "incidents");
+					File ff = new File(Environment
+							.getExternalStorageDirectory(), "incidents");
 					ff.delete();
 					ff.createNewFile();
 				} catch (IOException e) {
@@ -130,7 +134,10 @@ public class MainActivity extends Activity {
 		String string = "hello world!";
 		TextView tv = (TextView) findViewById(R.id.textView1);
 		try {
-			FileInputStream fis = openFileInput("track");
+			// FileInputStream fis = openFileInput("track");
+			File f = new File(Environment.getExternalStorageDirectory(),
+					"track");
+			FileInputStream fis = new FileInputStream(f);
 			StringBuffer str = new StringBuffer("");
 			byte[] buff = new byte[1024];
 			while (fis.read(buff) != -1) {

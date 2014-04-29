@@ -13,12 +13,14 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.IBinder;
 import android.util.Log;
 
 public class Tracker extends Service {
 
-	String path = "track";
+	File ff;// = Environment.getExternalStorageDirectory();
+	String path = "";// ff.getAbsolutePath() + "/track";
 	Track t;
 
 	LocationManager lm;
@@ -26,9 +28,10 @@ public class Tracker extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-
+		ff = new File(Environment.getExternalStorageDirectory()
+				.getAbsolutePath(), "track");
 		// path = intent.getStringExtra("KEY1");
-		String FILENAME = "track";
+		String FILENAME = path;
 		SerializableTime now = new SerializableTime();
 		now.setToNow();
 		t = new Track(now);
@@ -36,7 +39,8 @@ public class Tracker extends Service {
 
 		FileOutputStream fos;
 		try {
-			fos = openFileOutput(FILENAME, Context.MODE_APPEND);
+			// fos = openFileOutput(FILENAME, Context.MODE_APPEND);
+			fos = new FileOutputStream(ff, true);
 			fos.write(string.getBytes());
 			fos.close();
 		} catch (FileNotFoundException e) {
@@ -60,7 +64,8 @@ public class Tracker extends Service {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		File f = new File(getFilesDir(), "serializedTrack");
+		File f = new File(Environment.getExternalStorageDirectory()
+				.getAbsolutePath(), "serializedTrack");
 		FileOutputStream fos;
 		lm.removeUpdates(ll);
 		try {
@@ -75,6 +80,8 @@ public class Tracker extends Service {
 			e.printStackTrace();
 		}
 	}
+
+	Point p1, p2;
 
 	/*
 	 * listens coordinate changes
@@ -95,9 +102,14 @@ public class Tracker extends Service {
 				String string = "c " + location.getLatitude() + " "
 						+ location.getLongitude() + " " + now.format2445()
 						+ "\n";
-
+				String logger = "l " + location.getLatitude() + " "
+						+ location.getLongitude() + " " + now.toMillis(true)
+						+ " ";
 				// add to track
-
+				p2 = new Point(location.getLatitude(), location.getLongitude(),
+						now, p1);
+				logger += p2.Speed() + "\n";
+				p1 = p2;
 				// t.add(location.getLatitude(), location.getLongitude(), now);
 				Incident inc = Analyzer.addPoint(location.getLatitude(),
 						location.getLongitude(), now);
@@ -109,13 +121,27 @@ public class Tracker extends Service {
 				// String string = t.getLast().toString();
 				FileOutputStream fos;
 				try {
-					fos = openFileOutput(FILENAME, Context.MODE_APPEND);
+					// fos = openFileOutput(FILENAME, Context.MODE_APPEND);
+					ff = new File(Environment.getExternalStorageDirectory()
+							.getAbsolutePath(), "track");
+					fos = new FileOutputStream(ff, true);
 					fos.write(string.getBytes());
 					fos.close();
-					FileOutputStream incstr = openFileOutput("incidents",
-							Context.MODE_APPEND);
+					/*
+					 * FileOutputStream incstr = openFileOutput("incidents",
+					 * Context.MODE_APPEND);
+					 */
+					ff = new File(Environment.getExternalStorageDirectory()
+							.getAbsolutePath(), "incidents");
+					FileOutputStream incstr = new FileOutputStream(ff, true);
 					incstr.write(incidents.getBytes());
 					incstr.close();
+
+					ff = new File(Environment.getExternalStorageDirectory()
+							.getAbsolutePath(), "InsuranceLog");
+					FileOutputStream log = new FileOutputStream(ff, true);
+					log.write(logger.getBytes());
+					log.close();
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

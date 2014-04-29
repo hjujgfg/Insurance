@@ -4,6 +4,7 @@ package com.tteam.insurance;
  * Displays a map and our track
  */
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.ImageView;
@@ -115,8 +117,10 @@ public class ShowTrack extends FragmentActivity {
 	 */
 	private void fillPoints() {
 		try {
-			FileInputStream fis = openFileInput("track");
-			// StringBuffer str = new StringBuffer("");
+			// FileInputStream fis = openFileInput("track");
+			File f = new File(Environment.getExternalStorageDirectory(),
+					"track");
+			FileInputStream fis = new FileInputStream(f);
 			InputStreamReader isr = new InputStreamReader(fis);
 			BufferedReader br = new BufferedReader(isr);
 			String tmp = br.readLine();
@@ -170,8 +174,10 @@ public class ShowTrack extends FragmentActivity {
 
 	private void fillIncidents() {
 		try {
-			FileInputStream fis = openFileInput("incidents");
-			// StringBuffer str = new StringBuffer("");
+			// FileInputStream fis = openFileInput("incidents");
+			File f = new File(Environment.getExternalStorageDirectory(),
+					"incidents");
+			FileInputStream fis = new FileInputStream(f);
 			InputStreamReader isr = new InputStreamReader(fis);
 			BufferedReader br = new BufferedReader(isr);
 			String tmp = br.readLine();
