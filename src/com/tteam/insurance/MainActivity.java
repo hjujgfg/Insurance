@@ -9,8 +9,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.Menu;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,7 +21,10 @@ public class MainActivity extends Activity {
 	ImageView start;
 	ImageView clear;
 	ImageView clearCoordsFile;
-	private Context context;
+	ImageView stopService;
+	EditText accelerationLimit;
+	// TODO public only for TESTING
+	public static Context context;
 	private Intent serviceIntent;
 
 	@Override
@@ -72,9 +77,16 @@ public class MainActivity extends Activity {
 				// TODO Auto-generated method stub
 				context.stopService(serviceIntent);
 				try {
-					File f = new File(context.getFilesDir(), "track");
+					// File f = new File(context.getFilesDir(), "track");
+					File f = new File(
+							Environment.getExternalStorageDirectory(), "track");
 					f.delete();
 					f.createNewFile();
+
+					File ff = new File(Environment
+							.getExternalStorageDirectory(), "incidents");
+					ff.delete();
+					ff.createNewFile();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -82,7 +94,32 @@ public class MainActivity extends Activity {
 				displayCoords();
 			}
 		});
+		stopService = (ImageView) findViewById(R.id.stop_andro);
+		stopService.setOnClickListener(new View.OnClickListener() {
 
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				context.stopService(serviceIntent);
+				try {
+
+				} catch (Exception e) {
+					context.stopService(serviceIntent);
+				}
+			}
+		});
+		accelerationLimit = (EditText) findViewById(R.id.accelerationLimit);
+		accelerationLimit
+				.setOnLongClickListener(new View.OnLongClickListener() {
+
+					@Override
+					public boolean onLongClick(View v) {
+						// TODO Auto-generated method stub
+						Analyzer.setAccelerationLimit(accelerationLimit
+								.getText().toString());
+						return false;
+					}
+				});
 	}
 
 	@Override
@@ -97,7 +134,10 @@ public class MainActivity extends Activity {
 		String string = "hello world!";
 		TextView tv = (TextView) findViewById(R.id.textView1);
 		try {
-			FileInputStream fis = openFileInput("track");
+			// FileInputStream fis = openFileInput("track");
+			File f = new File(Environment.getExternalStorageDirectory(),
+					"track");
+			FileInputStream fis = new FileInputStream(f);
 			StringBuffer str = new StringBuffer("");
 			byte[] buff = new byte[1024];
 			while (fis.read(buff) != -1) {
