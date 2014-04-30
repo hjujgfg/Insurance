@@ -26,6 +26,11 @@ public class Tracker extends Service {
 	LocationManager lm;
 	LocationListener ll;
 
+	static final int MSG_SPEED = 1;
+	static final int MSG_ACC = 2;
+	static final int MSG_DECC = 3;
+	static final int MSG_CORNER = 4;
+
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		ff = new File(Environment.getExternalStorageDirectory()

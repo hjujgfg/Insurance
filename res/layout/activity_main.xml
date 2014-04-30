@@ -21,6 +21,20 @@
 	      android:layout_toRightOf="@+id/imageView1"	         
 	      android:contentDescription="@string/start_btn"
 	      android:src="@drawable/ic_launcher" />
+	
+	<EditText
+        android:id="@+id/accelerationLimit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/clear_andro"
+        android:layout_toLeftOf="@+id/clear_andro"
+        android:layout_toRightOf="@+id/stop_andro"
+        android:ems="10"
+        android:inputType="phone" >
+
+        <requestFocus />
+    </EditText>
+    
 	<ImageView
 	      android:id="@+id/clear_andro"
 	      android:layout_width="wrap_content"
@@ -35,13 +49,74 @@
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/imageView1"
         android:src="@drawable/ic_launcher" />
+
+	<TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/accelerationLimit"        
+        android:layout_alignParentLeft="true"
+        android:text="Speed:"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    
+    <TextView
+        android:id="@+id/speedView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textView2"
+        android:layout_alignBottom="@+id/textView2"
+        android:layout_alignLeft="@+id/accView"
+        android:layout_alignRight="@+id/accView"
+        android:text="123"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+    
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textView2"
+        android:text="Acceleration"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/accView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView3"
+        android:layout_alignRight="@+id/decView"
+        android:layout_below="@+id/textView2"
+        android:layout_toRightOf="@+id/decView1"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/decView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView3"
+        android:layout_below="@+id/textView3"
+        android:text="Deceleration"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/decView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/decView1"
+        android:layout_alignBottom="@+id/decView1"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@+id/textView3"
+        android:text="123"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    
     <ScrollView
         android:id="@+id/scrollView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
-        android:layout_below="@+id/imageView1">       
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/decView"
+        android:layout_toLeftOf="@+id/textView3" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -56,17 +131,8 @@
         </LinearLayout>
     </ScrollView>
 
-    <EditText
-        android:id="@+id/accelerationLimit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/clear_andro"
-        android:layout_toLeftOf="@+id/clear_andro"
-        android:layout_toRightOf="@+id/stop_andro"
-        android:ems="10"
-        android:inputType="phone" >
+    
 
-        <requestFocus />
-    </EditText>
+    
 	
 </RelativeLayout>

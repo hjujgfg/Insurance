@@ -6,10 +6,15 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
@@ -26,6 +31,7 @@ public class MainActivity extends Activity {
 	// TODO public only for TESTING
 	public static Context context;
 	private Intent serviceIntent;
+	TextView accView, decView, speedView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +126,9 @@ public class MainActivity extends Activity {
 						return false;
 					}
 				});
+		accView = (TextView) findViewById(R.id.accView);
+		decView = (TextView) findViewById(R.id.decView);
+		speedView = (TextView) findViewById(R.id.speedView);
 	}
 
 	@Override
@@ -153,4 +162,38 @@ public class MainActivity extends Activity {
 			e.printStackTrace();
 		}
 	}
+
+	class IncomingHandler extends Handler {
+		@Override
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case Tracker.MSG_ACC:
+				accView.setText(msg.getData().getString("acc"));
+				break;
+			case Tracker.MSG_DECC:
+				decView.setText(msg.getData().getString("dec"));
+				break;
+			case Tracker.MSG_SPEED:
+				speedView.setText(msg.getData().getString("speed"));
+				break;
+			default:
+				super.handleMessage(msg);
+			}
+		}
+	}
+
+	private ServiceConnection sConnection = new ServiceConnection() {
+
+		@Override
+		public void onServiceDisconnected(ComponentName name) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void onServiceConnected(ComponentName name, IBinder service) {
+			// TODO Auto-generated method stub
+
+		}
+	};
 }
