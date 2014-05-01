@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 
 import android.app.Service;
 import android.content.Context;
@@ -14,7 +15,11 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
 import android.util.Log;
 
 public class Tracker extends Service {
@@ -31,8 +36,18 @@ public class Tracker extends Service {
 	static final int MSG_DECC = 3;
 	static final int MSG_CORNER = 4;
 
+	static final int MSG_REG_CLIENT = 5;
+	static final int MSG_UNREG_CLIENT = 6;
+
+	boolean isRunning;
+
+	final Messenger mMessenger = new Messenger(new IncomingHandler());
+
+	ArrayList<Messenger> mClients = new ArrayList<Messenger>();
+
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
+		isRunning = true;
 		ff = new File(Environment.getExternalStorageDirectory()
 				.getAbsolutePath(), "track");
 		// path = intent.getStringExtra("KEY1");
@@ -121,7 +136,11 @@ public class Tracker extends Service {
 				String incidents = "";
 				if (inc != null) {
 					incidents = "i " + inc.Lat() + " " + inc.Lng() + "\n";
+					sendMessageToUI(p2.Speed() + " ", MSG_SPEED);
+					sendMessageToUI(inc.accelaration + " ", MSG_ACC);
+					sendMessageToUI(-inc.accelaration + " ", MSG_DECC);
 				}
+
 				t.addIncident(inc);
 				// String string = t.getLast().toString();
 				FileOutputStream fos;
@@ -179,8 +198,52 @@ public class Tracker extends Service {
 	@Override
 	public IBinder onBind(Intent arg0) {
 		// TODO Auto-generated method stub
+		return mMessenger.getBinder();
+	}
 
-		return null;
+	class IncomingHandler extends Handler {
+		@Override
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case MSG_REG_CLIENT:
+				mClients.add(msg.replyTo);
+				break;
+			case MSG_UNREG_CLIENT:
+				mClients.remove(msg.replyTo);
+				break;
+			default:
+				super.handleMessage(msg);
+			}
+		}
+	}
+
+	private void sendMessageToUI(String val, int type) {
+		for (int i = mClients.size() - 1; i >= 0; i--) {
+			try {
+				Bundle b = new Bundle();
+				Message msg = null;
+				switch (type) {
+				case MSG_SPEED:
+					b.putString("speed", val);
+					msg = Message.obtain(null, MSG_SPEED);
+					break;
+				case MSG_ACC:
+					b.putString("acc", val);
+					msg = Message.obtain(null, MSG_ACC);
+					break;
+				case MSG_DECC:
+					b.putString("dec", val);
+					msg = Message.obtain(null, MSG_DECC);
+					break;
+				default:
+
+				}
+				msg.setData(b);
+				mClients.get(i).send(msg);
+			} catch (RemoteException e) {
+				mClients.remove(i);
+			}
+		}
 	}
 
 }

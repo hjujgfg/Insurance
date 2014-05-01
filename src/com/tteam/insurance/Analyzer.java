@@ -9,7 +9,7 @@ public class Analyzer {
 
 	// current several points for analysis
 	public static LinkedList<Point> currentPoints = new LinkedList<Point>();
-	private static double accelerationLimit = 0.8;
+	private static double accelerationLimit = 0.0;
 
 	/*
 	 * e gets a new point. checks on the current list of points, whether there
@@ -56,7 +56,7 @@ public class Analyzer {
 		Log.d("Millis", "Time a - b: " + (b.Millis() - a.Millis()) / 1000);
 		Log.d("Speed", "Speed = " + b.Speed());
 
-		if (Math.abs(acceleration) > accelerationLimit) {
+		if (Math.abs(acceleration) >= accelerationLimit) {
 			return new Incident(b, acceleration, 0);
 		}
 		return null;

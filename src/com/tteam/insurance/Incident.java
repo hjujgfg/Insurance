@@ -1,7 +1,6 @@
 package com.tteam.insurance;
 
 import android.util.Log;
-import android.widget.Toast;
 
 public class Incident {
 	private Point location;
@@ -11,9 +10,10 @@ public class Incident {
 
 	public Incident(Point loc, double acc, double angle) {
 		this.location = loc;
-		Toast t = Toast.makeText(MainActivity.context, loc.toString()
-				+ " acc: " + acc + "\n", Toast.LENGTH_LONG);
-		t.show();
+		/*
+		 * Toast t = Toast.makeText(MainActivity.context, loc.toString() +
+		 * " acc: " + acc + "\n", Toast.LENGTH_LONG); t.show();
+		 */
 		if (acc != 0) {
 			if (acc > 0) {
 				type = "acceleration";

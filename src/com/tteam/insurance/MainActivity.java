@@ -15,6 +15,8 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
@@ -31,13 +33,19 @@ public class MainActivity extends Activity {
 	// TODO public only for TESTING
 	public static Context context;
 	private Intent serviceIntent;
-	TextView accView, decView, speedView;
+	TextView accView, decView, speedView, statusView;
+
+	boolean isBound;
+
+	Messenger mService;
+	final Messenger mMessenger = new Messenger(new IncomingHandler());
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		context = this;
+		isBound = false;
 		// file for coords
 		final File f = new File(this.getFilesDir(), "track");
 		try {
@@ -106,12 +114,9 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				doUnbindService();
 				context.stopService(serviceIntent);
-				try {
 
-				} catch (Exception e) {
-					context.stopService(serviceIntent);
-				}
 			}
 		});
 		accelerationLimit = (EditText) findViewById(R.id.accelerationLimit);
@@ -129,6 +134,8 @@ public class MainActivity extends Activity {
 		accView = (TextView) findViewById(R.id.accView);
 		decView = (TextView) findViewById(R.id.decView);
 		speedView = (TextView) findViewById(R.id.speedView);
+		statusView = (TextView) findViewById(R.id.statusView);
+		doBindService();
 	}
 
 	@Override
@@ -163,6 +170,30 @@ public class MainActivity extends Activity {
 		}
 	}
 
+	void doBindService() {
+		bindService(serviceIntent, sConnection, Context.BIND_AUTO_CREATE);
+		isBound = true;
+		statusView.setText("binding");
+	}
+
+	void doUnbindService() {
+		if (isBound) {
+			if (mService != null) {
+				try {
+					Message msg = Message
+							.obtain(null, Tracker.MSG_UNREG_CLIENT);
+					msg.replyTo = mMessenger;
+					mService.send(msg);
+				} catch (RemoteException e) {
+
+				}
+				unbindService(sConnection);
+				isBound = false;
+				statusView.setText("Unbinding");
+			}
+		}
+	}
+
 	class IncomingHandler extends Handler {
 		@Override
 		public void handleMessage(Message msg) {
@@ -187,13 +218,22 @@ public class MainActivity extends Activity {
 		@Override
 		public void onServiceDisconnected(ComponentName name) {
 			// TODO Auto-generated method stub
-
+			mService = null;
+			statusView.setText("Disconnected");
 		}
 
 		@Override
 		public void onServiceConnected(ComponentName name, IBinder service) {
 			// TODO Auto-generated method stub
+			mService = new Messenger(service);
+			statusView.setText("Attached");
+			try {
+				Message msg = Message.obtain(null, Tracker.MSG_REG_CLIENT);
+				msg.replyTo = mMessenger;
+				mService.send(msg);
+			} catch (RemoteException e) {
 
+			}
 		}
 	};
 }
