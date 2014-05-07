@@ -87,7 +87,7 @@ public class Point implements Parcelable, Serializable {
 		long millis1 = t1.toMillis(true);
 		long millis2 = t2.toMillis(true);
 		res = gps2m(x1, y1, x2, y2);
-		res /= ((millis1 - millis2) / 1000);
+		res /= ((millis1 - millis2) * 1000);
 		return res;
 	}
 

@@ -35,6 +35,7 @@ public class Tracker extends Service {
 	static final int MSG_ACC = 2;
 	static final int MSG_DECC = 3;
 	static final int MSG_CORNER = 4;
+	static final int MSG_SPEED2 = 11;
 
 	static final int MSG_REG_CLIENT = 5;
 	static final int MSG_UNREG_CLIENT = 6;
@@ -102,6 +103,8 @@ public class Tracker extends Service {
 	}
 
 	Point p1, p2;
+	float speed1 = 0, speed2 = 0;
+	SerializableTime time;
 
 	/*
 	 * listens coordinate changes
@@ -114,6 +117,10 @@ public class Tracker extends Service {
 				String FILENAME = path;
 				SerializableTime now = new SerializableTime();
 				now.setToNow();
+				if (time == null) {
+					time = new SerializableTime();
+					time.setToNow();
+				}
 				Log.d("LOCATION CHANGED",
 						location.getLatitude() + " " + now.toMillis(true));
 				Log.d("LOCATION CHANGED", location.getLongitude() + "");
@@ -130,15 +137,24 @@ public class Tracker extends Service {
 						now, p1);
 				logger += p2.Speed() + "\n";
 				p1 = p2;
+				speed1 = location.getSpeed();
+				double val = 0;
+				if ((now.toMillis(true) - time.toMillis(true)) != 0)
+					val = (speed1 - speed2)
+							/ (now.toMillis(true) - time.toMillis(true));
+				speed2 = speed1;
+				time.set(now);
 				// t.add(location.getLatitude(), location.getLongitude(), now);
 				Incident inc = Analyzer.addPoint(location.getLatitude(),
 						location.getLongitude(), now);
+
 				String incidents = "";
 				if (inc != null) {
 					incidents = "i " + inc.Lat() + " " + inc.Lng() + "\n";
 					sendMessageToUI(p2.Speed() + " ", MSG_SPEED);
 					sendMessageToUI(inc.accelaration + " ", MSG_ACC);
-					sendMessageToUI(-inc.accelaration + " ", MSG_DECC);
+					sendMessageToUI(location.getSpeed() + " ", MSG_DECC);
+					sendMessageToUI(val + " ", MSG_SPEED2);
 				}
 
 				t.addIncident(inc);
@@ -234,6 +250,10 @@ public class Tracker extends Service {
 				case MSG_DECC:
 					b.putString("dec", val);
 					msg = Message.obtain(null, MSG_DECC);
+					break;
+				case MSG_SPEED2:
+					b.putString("speed2", val);
+					msg = Message.obtain(null, MSG_SPEED2);
 					break;
 				default:
 

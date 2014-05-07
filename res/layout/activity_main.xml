@@ -108,6 +108,26 @@
         android:layout_toRightOf="@+id/textView3"
         android:text="123"
         android:textAppearance="?android:attr/textAppearanceLarge" />
+    
+    <TextView
+        android:id="@+id/secSpeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/decView1"
+        android:layout_below="@+id/decView1"
+        android:text="Deceleration"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/sSpeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/secSpeed"
+        android:layout_alignBottom="@+id/secSpeed"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@+id/secSpeed"
+        android:text="123"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <ScrollView
         android:id="@+id/scrollView1"
@@ -133,7 +153,7 @@
         android:id="@+id/statusView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/decView1"
+        android:layout_below="@+id/secSpeed"
         android:layout_alignParentLeft="true"
         android:text="Medium Text"
         android:textAppearance="?android:attr/textAppearanceMedium" />

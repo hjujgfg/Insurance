@@ -33,7 +33,7 @@ public class MainActivity extends Activity {
 	// TODO public only for TESTING
 	public static Context context;
 	private Intent serviceIntent;
-	TextView accView, decView, speedView, statusView;
+	TextView accView, decView, speedView, statusView, altSpeedView;
 
 	boolean isBound;
 
@@ -135,6 +135,7 @@ public class MainActivity extends Activity {
 		decView = (TextView) findViewById(R.id.decView);
 		speedView = (TextView) findViewById(R.id.speedView);
 		statusView = (TextView) findViewById(R.id.statusView);
+		altSpeedView = (TextView) findViewById(R.id.sSpeed);
 		doBindService();
 	}
 
@@ -207,6 +208,8 @@ public class MainActivity extends Activity {
 			case Tracker.MSG_SPEED:
 				speedView.setText(msg.getData().getString("speed"));
 				break;
+			case Tracker.MSG_SPEED2:
+				altSpeedView.setText(msg.getData().getString("speed2"));
 			default:
 				super.handleMessage(msg);
 			}
